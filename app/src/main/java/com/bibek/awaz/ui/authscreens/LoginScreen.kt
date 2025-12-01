@@ -8,22 +8,22 @@ import androidx.compose.ui.unit.dp
 import com.bibek.awaz.viewmodel.AuthViewModel
 
 @Composable
-fun LoginScreen(viewModel: AuthViewModel, onLoginSuccess: () -> Unit, onCreateAccountClick: () -> Unit) {
-
+fun LoginScreen(
+    viewModel: AuthViewModel,
+    onLoginSuccess: () -> Unit,
+    onCreateAccountClick: () -> Unit
+) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var errorMessage by remember { mutableStateOf("") }
 
     Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(30.dp),
+        modifier = Modifier.fillMaxSize().padding(30.dp),
         verticalArrangement = Arrangement.Center
     ) {
 
-        Text(text = "Login", style = MaterialTheme.typography.headlineMedium)
-
-        Spacer(modifier = Modifier.height(20.dp))
+        Text("Login", style = MaterialTheme.typography.headlineMedium)
+        Spacer(Modifier.height(20.dp))
 
         OutlinedTextField(
             value = email,
@@ -32,7 +32,7 @@ fun LoginScreen(viewModel: AuthViewModel, onLoginSuccess: () -> Unit, onCreateAc
             modifier = Modifier.fillMaxWidth()
         )
 
-        Spacer(modifier = Modifier.height(10.dp))
+        Spacer(Modifier.height(10.dp))
 
         OutlinedTextField(
             value = password,
@@ -41,23 +41,26 @@ fun LoginScreen(viewModel: AuthViewModel, onLoginSuccess: () -> Unit, onCreateAc
             modifier = Modifier.fillMaxWidth()
         )
 
-        Spacer(modifier = Modifier.height(20.dp))
+        Spacer(Modifier.height(20.dp))
 
         Button(
             onClick = {
-                viewModel.login(email, password,
-                    onSuccess = { onLoginSuccess() },
-                    onFailure = { error -> errorMessage = error }
+                viewModel.login(
+                    email, password,
+                    onSuccess = onLoginSuccess,
+                    onFailure = { errorMessage = it }
                 )
             },
             modifier = Modifier.fillMaxWidth()
-        ) {
-            Text("Login")
+        ) { Text("Login") }
+
+        TextButton(onClick = onCreateAccountClick) {
+            Text("Don't have an account? Create one")
         }
 
         if (errorMessage.isNotEmpty()) {
-            Spacer(modifier = Modifier.height(10.dp))
-            Text(text = errorMessage, color = MaterialTheme.colorScheme.error)
+            Spacer(Modifier.height(10.dp))
+            Text(errorMessage, color = MaterialTheme.colorScheme.error)
         }
     }
 }

@@ -43,7 +43,14 @@ class MainActivity : ComponentActivity() {
                     }
 
                     composable("home") {
-                        HomeScreen()
+                        HomeScreen(
+                            viewModel = viewModel,
+                            onOpenProfile = { navController.navigate("profile") }
+                        )
+                    }
+
+                    composable("profile") {
+                        ProfileScreen(viewModel = viewModel)
                     }
                 }
             }

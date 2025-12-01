@@ -8,56 +8,48 @@ import androidx.compose.ui.unit.dp
 import com.bibek.awaz.viewmodel.AuthViewModel
 
 @Composable
-fun RegisterScreen(viewModel: AuthViewModel, onRegisterSuccess: () -> Unit) {
-
+fun RegisterScreen(
+    viewModel: AuthViewModel,
+    onRegisterSuccess: () -> Unit
+) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var errorMessage by remember { mutableStateOf("") }
 
     Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(30.dp),
+        modifier = Modifier.fillMaxSize().padding(30.dp),
         verticalArrangement = Arrangement.Center
     ) {
 
-        Text(text = "Create Account", style = MaterialTheme.typography.headlineMedium)
+        Text("Create Account", style = MaterialTheme.typography.headlineMedium)
+        Spacer(Modifier.height(20.dp))
 
-        Spacer(modifier = Modifier.height(20.dp))
-
-        OutlinedTextField(
-            value = email,
-            onValueChange = { email = it },
-            label = { Text("Email") },
+        OutlinedTextField(value = email, onValueChange = { email = it }, label = { Text("Email") },
             modifier = Modifier.fillMaxWidth()
         )
-
-        Spacer(modifier = Modifier.height(10.dp))
+        Spacer(Modifier.height(10.dp))
 
         OutlinedTextField(
-            value = password,
-            onValueChange = { password = it },
-            label = { Text("Password") },
-            modifier = Modifier.fillMaxWidth()
+            value = password, onValueChange = { password = it },
+            label = { Text("Password") }, modifier = Modifier.fillMaxWidth()
         )
 
-        Spacer(modifier = Modifier.height(20.dp))
+        Spacer(Modifier.height(20.dp))
 
         Button(
             onClick = {
-                viewModel.register(email, password,
-                    onSuccess = { onRegisterSuccess() },
-                    onFailure = { error -> errorMessage = error }
+                viewModel.register(
+                    email, password,
+                    onSuccess = onRegisterSuccess,
+                    onFailure = { errorMessage = it }
                 )
             },
             modifier = Modifier.fillMaxWidth()
-        ) {
-            Text("Sign Up")
-        }
+        ) { Text("Sign Up") }
 
         if (errorMessage.isNotEmpty()) {
-            Spacer(modifier = Modifier.height(10.dp))
-            Text(text = errorMessage, color = MaterialTheme.colorScheme.error)
+            Spacer(Modifier.height(10.dp))
+            Text(errorMessage, color = MaterialTheme.colorScheme.error)
         }
     }
 }
